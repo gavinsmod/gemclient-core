@@ -20,6 +20,8 @@
 
 package com.peasenet.mods.tracer
 
+import com.peasenet.config.TracerConfig
+import com.peasenet.main.Settings
 import com.peasenet.mods.Mod
 import com.peasenet.mods.ModCategory
 import com.peasenet.util.event.data.CameraBob
@@ -62,6 +64,6 @@ abstract class TracerMod(
     }
 
     override fun onCameraViewBob(c: CameraBob) {
-        if (tracerConfig.viewBobCancel) c.cancel()
+        if (Settings.getConfig<TracerConfig>("tracer").viewBobCancel) c.cancel()
     }
 }

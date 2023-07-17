@@ -21,6 +21,7 @@ package com.peasenet.main
 
 import com.peasenet.mixinterface.IClientPlayerEntity
 import com.peasenet.mixinterface.IMinecraftClient
+import com.peasenet.mods.Mod
 import com.peasenet.util.RenderUtils
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
@@ -46,7 +47,6 @@ class GavinsModClient : ClientModInitializer {
                 m.checkKeybinding()
                 if (m.isActive || m.isDeactivating) m.onTick()
             }
-            checkAutoFullBright()
         })
         WorldRenderEvents.AFTER_ENTITIES.register(AfterEntities { context: WorldRenderContext ->
             RenderUtils.afterEntities(
@@ -61,20 +61,6 @@ class GavinsModClient : ClientModInitializer {
         })
     }
 
-    /**
-     * Checks if the auto full bright feature is enabled.
-     */
-    private fun checkAutoFullBright() {
-        if (!GavinsMod.fullbrightConfig.autoFullBright) return
-        val skyBrightness = minecraftClient.getWorld().getLightLevel(LightType.SKY, player!!.getBlockPos().up())
-        val blockBrightness = minecraftClient.getWorld().getLightLevel(LightType.BLOCK, player!!.getBlockPos().up())
-        val currTime = minecraftClient.getWorld().timeOfDay % 24000
-        var shouldBeFullBright = (currTime >= 13000 || currTime <= 100 || skyBrightness <= 2) && blockBrightness <= 2
-        shouldBeFullBright = shouldBeFullBright || player!!.isSubmergedInWater()
-        if (shouldBeFullBright && !Mods.getMod("fullbright").isActive) Mods.getMod("fullbright")
-            .activate() else if (Mods.getMod("fullbright").isActive && !shouldBeFullBright) Mods.getMod("fullbright")
-            .deactivate()
-    }
 
     companion object {
         val minecraftClient: IMinecraftClient

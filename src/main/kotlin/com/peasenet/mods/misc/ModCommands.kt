@@ -17,7 +17,7 @@
  * OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.peasenet.util
+package com.peasenet.mods.misc
 
 import com.peasenet.gui.GuiSettings
 import com.peasenet.main.GavinsMod
@@ -59,7 +59,6 @@ class ModCommands : OnChatSendListener {
         fun handleCommand(message: String): Boolean {
             // check if the message is a command
             var s = message
-            GavinsMod.LOGGER.info("Checking if $s is a command")
             if (!s.startsWith(".")) return false
             if (s.length == 1) return false
             s = s.substring(1)

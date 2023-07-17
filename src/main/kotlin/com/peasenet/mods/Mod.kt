@@ -24,6 +24,7 @@ import com.peasenet.gavui.Gui
 import com.peasenet.main.GavinsMod
 import com.peasenet.main.GavinsModClient
 import com.peasenet.main.Mods
+import com.peasenet.main.Settings
 import com.peasenet.mixinterface.IMinecraftClient
 import com.peasenet.settings.Setting
 import com.peasenet.util.KeyBindUtils
@@ -205,50 +206,32 @@ abstract class Mod(
         /**
          * Tracer configuration.
          */
-        @JvmStatic
-        protected var tracerConfig: TracerConfig = GavinsMod.tracerConfig
+        protected val tracerConfig: TracerConfig
+            get() {
+                return Settings.getConfig<TracerConfig>("tracer")
+            }
 
         /**
          * ESP configuration.
          */
-        @JvmStatic
-        var espConfig: EspConfig = GavinsMod.espConfig
-
-        /**
-         * Fps color configuration.
-         */
-        @JvmStatic
-        protected var fpsColorConfig: FpsColorConfig = GavinsMod.fpsColorConfig
-
-        /**
-         * The fullbright configuration.
-         */
-        @JvmStatic
-        protected var fullbrightConfig: FullbrightConfig = GavinsMod.fullbrightConfig
-
-        /**
-         * The radar configuration.
-         */
-        @JvmStatic
-        protected var radarConfig: RadarConfig = GavinsMod.radarConfig
+        val espConfig: EspConfig
+            get() {
+                return Settings.getConfig<EspConfig>("esp")
+            }
 
         /**
          * The waypoint configuration.
          */
-        @JvmStatic
-        protected var waypointConfig: WaypointConfig = GavinsMod.waypointConfig
-
-        /**
-         * The xray configuration.
-         */
-        @JvmStatic
-        protected var xrayConfig: XrayConfig = GavinsMod.xrayConfig
+//        @JvmStatic
+//        protected var waypointConfig: WaypointConfig = GavinsMod.waypointConfig
 
         /**
          * The miscellaneous configuration.
          */
-        @JvmStatic
-        protected var miscConfig: MiscConfig = GavinsMod.miscConfig
+        protected val miscConfig: MiscConfig
+            get() {
+                return Settings.getConfig<MiscConfig>("misc")
+            }
 
     }
 }

@@ -20,19 +20,9 @@
 package com.peasenet.main
 
 import com.peasenet.mods.Mod
-import com.peasenet.mods.Type
-import com.peasenet.mods.combat.ModAutoAttack
-import com.peasenet.mods.combat.ModAutoCrit
-import com.peasenet.mods.combat.ModKillAura
-import com.peasenet.mods.esp.*
 import com.peasenet.mods.gui.ModGui
 import com.peasenet.mods.gui.ModGuiSettings
-import com.peasenet.mods.misc.ModFpsCounter
-import com.peasenet.mods.misc.ModFreeCam
-import com.peasenet.mods.misc.ModGuiTextOverlay
-import com.peasenet.mods.movement.*
-import com.peasenet.mods.render.*
-import com.peasenet.mods.tracer.*
+import com.peasenet.mods.misc.ModCommands
 
 /**
  * A placeholder class that initializes all the mods, and contains a few methods for adding/getting to that list.
@@ -41,59 +31,10 @@ import com.peasenet.mods.tracer.*
  * @version 03-02-2023
  */
 class Mods {
-    init {
-        // MOVEMENT
-        ModFly()
-        ModAutoJump()
-        ModClimb()
-        ModNoClip()
-        ModNoFall()
-        ModFastMine()
-        ModFastPlace()
-        ModDolphin()
-        ModAntiTrample()
-        ModSpeed()
-        // COMBAT
-        ModKillAura()
-        ModAutoCrit()
-        ModAutoAttack()
-        // RENDER
-        ModXray()
-        ModAntiHurt()
-        ModFullBright()
-        ModAntiPumpkin()
-        ModHealthTag()
-        ModNoRain()
-        ModNoNausea()
-        ModAntiFire()
-        ModNoOverlay()
-        ModBarrierDetect()
-        ModNoVignette()
-        ModRadar()
-        ModWaypoint()
 
-        // GUI
+    init {
         ModGui()
         ModGuiSettings()
-
-        // ESP + TRACER
-        ModChestEsp()
-        ModChestTracer()
-        ModMobEsp()
-        ModMobTracer()
-        ModEntityItemTracer()
-        ModEntityItemEsp()
-        ModEntityPlayerTracer()
-        ModBeehiveTracer()
-        ModBeehiveEsp()
-        ModFurnaceTracer()
-        ModFurnaceEsp()
-        ModEntityPlayerEsp()
-        // MISC
-        ModGuiTextOverlay()
-        ModFpsCounter()
-        //TODO: 1.19.4
-        ModFreeCam()
     }
 
     companion object {
@@ -122,14 +63,16 @@ class Mods {
          * @return The mod with the given name.
          */
         @JvmStatic
-        fun getMod(name: String): Mod {
-            if(modMap[name] == null) throw NullPointerException("Mod $name does not exist.");
+        fun getMod(name: String): Mod? {
+            if (modMap[name] == null)
+                return null;
             return modMap[name]!!
         }
-        
+
         @JvmStatic
         fun isActive(name: String): Boolean {
-            return getMod(name).isActive
+            val mod: Mod = getMod(name) ?: return false
+            return mod.isActive
         }
 
         /**

@@ -9,4 +9,4 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-rootProject.name = "gavins-mod"
+rootProject.name = "gemclient-core"

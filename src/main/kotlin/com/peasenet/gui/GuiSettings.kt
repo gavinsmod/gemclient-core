@@ -19,6 +19,8 @@
  */
 package com.peasenet.gui
 
+import com.peasenet.config.EspConfig
+import com.peasenet.config.TracerConfig
 import com.peasenet.gavui.Gui
 import com.peasenet.gavui.GuiClick
 import com.peasenet.gavui.GuiScroll
@@ -27,6 +29,7 @@ import com.peasenet.gavui.math.PointF
 import com.peasenet.main.GavinsMod
 import com.peasenet.main.GavinsMod.Companion.setEnabled
 import com.peasenet.main.Mods.Companion.mods
+import com.peasenet.main.Settings
 import com.peasenet.mods.Mod
 import com.peasenet.mods.ModCategory
 import com.peasenet.settings.SettingBuilder
@@ -42,6 +45,8 @@ class GuiSettings : GuiElement(Text.translatable("gavinsmod.gui.settings")) {
     /**
      * Creates a new GUI settings screen.
      */
+
+
     init {
         renderDropdown = GuiScroll(PointF(10f, 20f), 100, 10, Text.translatable("gavinsmod.settings.render"))
         miscDropdown = GuiScroll(PointF(115f, 20f), 100, 10, Text.translatable("gavinsmod.settings.misc"))
@@ -51,6 +56,7 @@ class GuiSettings : GuiElement(Text.translatable("gavinsmod.gui.settings")) {
         waypointDropdown = GuiScroll(PointF(245f, 130f), 100, 10, Text.translatable("gavinsmod.mod.render.waypoints"))
         resetButton = GuiClick(PointF(0f, 1f), 4, 10, Text.translatable("gavinsmod.settings.reset"))
         reloadGui()
+        initialized = true
     }
 
     override fun init() {
@@ -127,6 +133,9 @@ class GuiSettings : GuiElement(Text.translatable("gavinsmod.gui.settings")) {
     }
 
     companion object {
+
+        var initialized: Boolean = false
+
         /**
          * The tracer dropdown
          */
@@ -162,31 +171,34 @@ class GuiSettings : GuiElement(Text.translatable("gavinsmod.gui.settings")) {
          * home.
          */
         private fun miscSettings() {
-//            val espAlpha = SlideSetting("gavinsmod.settings.alpha")
-//            espAlpha.setCallback { GavinsMod.espConfig.alpha = espAlpha.value }
-//            espAlpha.value = GavinsMod.espConfig.alpha
+            var espConfig = Settings.getConfig<EspConfig>("esp")
+            if (espConfig != null) {
+                val espAlpha = SettingBuilder()
+                    .setTitle("gavinsmod.settings.alpha")
+                    .setValue(Settings.getConfig<EspConfig>("esp").alpha)
+                    .buildSlider()
+                espAlpha.setCallback { Settings.getConfig<EspConfig>("esp").alpha = espAlpha.value }
+                espDropdown.addElement(espAlpha.gui)
 
-            val espAlpha = SettingBuilder()
-                .setTitle("gavinsmod.settings.alpha")
-                .setValue(GavinsMod.espConfig.alpha)
-                .buildSlider()
-            espAlpha.setCallback { GavinsMod.espConfig.alpha = espAlpha.value }
+            }
+            val tracerConfig = Settings.getConfig<TracerConfig>("tracer")
+            if (tracerConfig != null) {
+                val tracerAlpha = SettingBuilder()
+                    .setTitle("gavinsmod.settings.alpha")
+                    .setValue(Settings.getConfig<TracerConfig>("tracer").alpha)
+                    .buildSlider()
+                tracerAlpha.setCallback { Settings.getConfig<TracerConfig>("tracer").alpha = tracerAlpha.value }
 
-            val tracerAlpha = SettingBuilder()
-                .setTitle("gavinsmod.settings.alpha")
-                .setValue(GavinsMod.tracerConfig.alpha)
-                .buildSlider()
-            tracerAlpha.setCallback { GavinsMod.tracerConfig.alpha = tracerAlpha.value }
-
-            val tracerViewBob = SettingBuilder()
-                .setTitle("gavinsmod.settings.tracer.viewbobcancel")
-                .setState(GavinsMod.tracerConfig.viewBobCancel)
-                .buildToggleSetting()
-            tracerViewBob.setCallback { GavinsMod.tracerConfig.viewBobCancel = tracerViewBob.value }
-
-            espDropdown.addElement(espAlpha.gui)
-            tracerDropdown.addElement(tracerViewBob.gui)
-            tracerDropdown.addElement(tracerAlpha.gui)
+                val tracerViewBob = SettingBuilder()
+                    .setTitle("gavinsmod.settings.tracer.viewbobcancel")
+                    .setState(Settings.getConfig<TracerConfig>("tracer").viewBobCancel)
+                    .buildToggleSetting()
+                tracerViewBob.setCallback {
+                    Settings.getConfig<TracerConfig>("tracer").viewBobCancel = tracerViewBob.value
+                }
+                tracerDropdown.addElement(tracerViewBob.gui)
+                tracerDropdown.addElement(tracerAlpha.gui)
+            }
         }
     }
 }

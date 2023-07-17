@@ -1,24 +1,9 @@
 {
   "client": [
-    "CameraMixin",
-    "EntityRendererMixin",
-    "MixinBiome",
-    "MixinBlock",
-    "MixinBlockEntityRenderDispatcher",
-    "MixinChatScreen",
     "MixinClientPlayerEntity",
-    "MixinClientPlayNetworkHandler",
-    "MixinClientWorld",
-    "MixinGameRendererBobView",
-    "MixinInGameHud",
-    "MixinInGameOverlayRenderer",
     "MixinKeyBinding",
-    "MixinLivingEntity",
     "MixinMinecraftClient",
-    "MixinPlayerEntity",
-    "MixinSimpleOption",
-    "MixinSodiumblockOcclusionCache",
-    "MixinTerrainRenderContext"
+    "MixinSimpleOption"
   ],
   "compatibilityLevel": "JAVA_17",
   "injectors": {

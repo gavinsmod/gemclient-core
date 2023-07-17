@@ -23,6 +23,7 @@ import com.mojang.blaze3d.systems.RenderSystem
 import com.peasenet.gavui.color.Color
 import com.peasenet.main.GavinsMod
 import com.peasenet.main.GavinsModClient
+import com.peasenet.main.Settings
 import com.peasenet.mixinterface.ISimpleOption
 import com.peasenet.util.PlayerUtils.getNewPlayerPosition
 import com.peasenet.util.event.BlockEntityRenderEvent
@@ -69,13 +70,25 @@ object RenderUtils {
      * @param color     The color to draw the line in.
      */
     @JvmOverloads
-    fun renderSingleLine(stack: MatrixStack, buffer: VertexConsumer, playerPos: Vec3d, boxPos: Vec3d, color: Color, alpha: Float = 1f) {
-        val normal = Vec3d(boxPos.getX() - playerPos.getX(), boxPos.getY() - playerPos.getY(), boxPos.getZ() - playerPos.getZ())
+    fun renderSingleLine(
+        stack: MatrixStack,
+        buffer: VertexConsumer,
+        playerPos: Vec3d,
+        boxPos: Vec3d,
+        color: Color,
+        alpha: Float = 1f
+    ) {
+        val normal =
+            Vec3d(boxPos.getX() - playerPos.getX(), boxPos.getY() - playerPos.getY(), boxPos.getZ() - playerPos.getZ())
         normal.normalize()
         val matrix4f = stack.peek().positionMatrix
         val matrix3f = stack.peek().normalMatrix
-        buffer.vertex(matrix4f, playerPos.getX().toFloat(), playerPos.getY().toFloat(), playerPos.getZ().toFloat()).color(color.red, color.green, color.blue, alpha).normal(matrix3f, normal.getX().toFloat(), normal.getY().toFloat(), normal.getZ().toFloat()).next()
-        buffer.vertex(matrix4f, boxPos.getX().toFloat(), boxPos.getY().toFloat(), boxPos.getZ().toFloat()).color(color.red, color.green, color.blue, alpha).normal(matrix3f, normal.getX().toFloat(), normal.getY().toFloat(), normal.getZ().toFloat()).next()
+        buffer.vertex(matrix4f, playerPos.getX().toFloat(), playerPos.getY().toFloat(), playerPos.getZ().toFloat())
+            .color(color.red, color.green, color.blue, alpha)
+            .normal(matrix3f, normal.getX().toFloat(), normal.getY().toFloat(), normal.getZ().toFloat()).next()
+        buffer.vertex(matrix4f, boxPos.getX().toFloat(), boxPos.getY().toFloat(), boxPos.getZ().toFloat())
+            .color(color.red, color.green, color.blue, alpha)
+            .normal(matrix3f, normal.getX().toFloat(), normal.getY().toFloat(), normal.getZ().toFloat()).next()
     }
 
     /**
@@ -172,7 +185,15 @@ object RenderUtils {
      * @param chunkX   The player's chunk x.
      * @param chunkZ   The player's chunk z.
      */
-    private fun drawBlockMods(level: ClientWorld?, stack: MatrixStack, buffer: BufferBuilder, playerPos: Vec3d, chunkX: Int, chunkZ: Int, delta: Float) {
+    private fun drawBlockMods(
+        level: ClientWorld?,
+        stack: MatrixStack,
+        buffer: BufferBuilder,
+        playerPos: Vec3d,
+        chunkX: Int,
+        chunkZ: Int,
+        delta: Float
+    ) {
         for (x in -CHUNK_RADIUS..CHUNK_RADIUS) {
             for (z in -CHUNK_RADIUS..CHUNK_RADIUS) {
                 val chunkX1 = chunkX + x
@@ -229,7 +250,17 @@ object RenderUtils {
      * @param z2 The second z coordinate.
      * @param c The color to draw the plane in.
      */
-    private fun renderPlane(buffer: BufferBuilder, matrix4f: Matrix4f, x1: Float, x2: Float, y1: Float, y2: Float, z1: Float, z2: Float, c: Int) {
+    private fun renderPlane(
+        buffer: BufferBuilder,
+        matrix4f: Matrix4f,
+        x1: Float,
+        x2: Float,
+        y1: Float,
+        y2: Float,
+        z1: Float,
+        z2: Float,
+        c: Int
+    ) {
         if (x1 == x2) {
             buffer.vertex(matrix4f, x1, y1, z1).color(c).next()
             buffer.vertex(matrix4f, x1, y2, z1).color(c).next()
@@ -279,7 +310,14 @@ object RenderUtils {
      * @param buffer    The buffer to write to.
      * @param playerPos The player's position.
      */
-    private fun drawEntityMods(level: ClientWorld?, player: ClientPlayerEntity?, stack: MatrixStack, delta: Float, buffer: BufferBuilder, playerPos: Vec3d) {
+    private fun drawEntityMods(
+        level: ClientWorld?,
+        player: ClientPlayerEntity?,
+        stack: MatrixStack,
+        delta: Float,
+        buffer: BufferBuilder,
+        playerPos: Vec3d
+    ) {
         level!!.entities.forEach(Consumer { e: Entity ->
             if (e.squaredDistanceTo(player) > 64 * CHUNK_RADIUS * 16 || player === e) return@Consumer
             val aabb = getEntityBox(delta, e)
@@ -307,22 +345,14 @@ object RenderUtils {
      * Sets the gamma of the game to the full bright value of 10000.0 while storing the last gamma value.
      */
     fun setHighGamma() {
-        if (GavinsMod.fullbrightConfig.gammaFade) {
-            fadeGammaUp()
-        } else {
-            gamma = GavinsMod.fullbrightConfig.maxGamma.toDouble()
-        }
+        gamma = 16.0
     }
 
     /**
      * Resets the gamma to the players last configured value.
      */
     fun setLowGamma() {
-        if (GavinsMod.fullbrightConfig.gammaFade) {
-            fadeGammaDown()
-        } else {
-            gamma = LAST_GAMMA
-        }
+        gamma = LAST_GAMMA
     }
 
     var gamma: Double
@@ -339,7 +369,7 @@ object RenderUtils {
          */
         set(gamma) {
             var newValue = gamma
-            val maxGamma = GavinsMod.fullbrightConfig.maxGamma
+            val maxGamma = 16f
             if (newValue < 0.0) newValue = 0.0
             if (newValue > maxGamma) newValue = maxGamma.toDouble()
             val newGamma = GavinsModClient.minecraftClient.options.gamma

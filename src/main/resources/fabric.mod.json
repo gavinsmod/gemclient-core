@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "gavinsmod",
-  "version": "1.4.5",
-  "name": "GavinsMod",
+  "id": "gemclient-core",
+  "version": "${version}",
+  "name": "GEM Client",
   "description": "A simple modded client containing some hacks!",
   "authors": [
     "GT3CH1",

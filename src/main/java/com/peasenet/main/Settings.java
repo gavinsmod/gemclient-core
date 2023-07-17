@@ -46,8 +46,34 @@ public class Settings {
     public static final HashMap<String, Config<?>> settings = new HashMap<>();
     public static final HashMap<String, Config<?>> defaultSettings = new HashMap<>();
 
+    static {
+        addConfig(new EspConfig());
+        addConfig(new TracerConfig());
+        addConfig(new MiscConfig());
+        defaultSettings.putAll(settings);
+        // check if the config file exists
+        var path = getFilePath();
+        var file = new File(path);
+        if (!file.exists()) {
+            save();
+        }
+        var json = new GsonBuilder().setPrettyPrinting().create();
+        try {
+            var reader = new JsonReader(new InputStreamReader(new FileInputStream(file)));
+            HashMap<String, Config<?>> data = json.fromJson(reader, HashMap.class);
+            if (data == null)
+                loadDefault();
+            reader.close();
+        } catch (Exception ignored) {
+        }
+        for (var entry : settings.entrySet()) {
+            var key = entry.getKey();
+            var value = entry.getValue();
+            settings.put(key, value.readFromSettings());
+        }
+    }
     @SuppressWarnings("rawtypes")
-    public static Config getConfig(Class<? extends Config> clazz, String key) {
+    public static Config fetchConfig(Class<? extends Config> clazz, String key) {
         // open the settings file
         var cfgFile = getFilePath();
         var json = new GsonBuilder().create();
@@ -71,35 +97,7 @@ public class Settings {
      * Initializes the settings.
      */
     public static void initialize() {
-        settings.put("misc", new MiscConfig());
-        settings.put("radar", new RadarConfig());
-        settings.put("esp", new EspConfig());
-        settings.put("tracer", new TracerConfig());
-        settings.put("xray", new XrayConfig());
-        settings.put("fullbright", new FullbrightConfig());
-        settings.put("fpsColors", new FpsColorConfig());
-        settings.put("waypoints", new WaypointConfig());
-        defaultSettings.putAll(settings);
-        // check if the config file exists
-        var path = getFilePath();
-        var file = new File(path);
-        if (!file.exists()) {
-            save();
-        }
-        var json = new GsonBuilder().setPrettyPrinting().create();
-        try {
-            var reader = new JsonReader(new InputStreamReader(new FileInputStream(file)));
-            HashMap<String, Config<?>> data = json.fromJson(reader, HashMap.class);
-            if (data == null)
-                loadDefault();
-            reader.close();
-        } catch (Exception ignored) {
-        }
-        for (var entry : settings.entrySet()) {
-            var key = entry.getKey();
-            var value = entry.getValue();
-            settings.put(key, value.readFromSettings());
-        }
+       
     }
 
     /**
@@ -120,6 +118,52 @@ public class Settings {
             GavinsMod.LOGGER.error(e.getMessage());
         }
     }
+
+    public static void addConfig(Config<?> config) {
+        defaultSettings.put(config.getKey(), config);
+        settings.put(config.getKey(), config.readFromSettings());
+    }
+
+    public static void addConfig(String key, Config<?> config) {
+        defaultSettings.put(key, config);
+        settings.put(key, config.readFromSettings());
+    }
+
+    // parameterized function, so that a method call may be Settings.getConfig<WaypointConfig>("waypoints")
+    @SuppressWarnings("unchecked")
+    public static <T extends Config<?>> T getConfig(String key) {
+        var cfg = (T) settings.get(key);
+        if (cfg == null) {
+            try {
+                loadConfig(key);
+            } catch (Exception e) {
+                GavinsMod.LOGGER.error("Error loading config " + key);
+                GavinsMod.LOGGER.error(e.getMessage());
+            }
+            cfg = (T) settings.get(key);
+        }
+        return cfg;
+    }
+
+    /**
+     * Ensures that the base settings (Tracer, Misc, ESP) are initialized.
+     */
+    private static void ensureInitializedBase() {
+        if (settings.size() == 0) {
+            GavinsMod.LOGGER.info("Initializing settings because they are empty...");
+            initialize();
+        }
+    }
+
+    public static void loadConfig(String key) {
+
+        settings.get(key).readFromSettings();
+    }
+
+    public static void removeConfig(String key) {
+        settings.remove(key);
+    }
+
 
     /**
      * Ensures that the configuration file is created.

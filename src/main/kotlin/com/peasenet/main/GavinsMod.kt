@@ -44,19 +44,13 @@ import java.util.stream.Stream
 class GavinsMod : ModInitializer {
     override fun onInitialize() {
         GavUI.initialize()
-        LOGGER.info("Loading settings")
-        Settings.initialize()
         espConfig = Settings.settings["esp"] as EspConfig
         tracerConfig = Settings.settings["tracer"] as TracerConfig
-        xrayConfig = Settings.settings["xray"] as XrayConfig
-        fullbrightConfig = Settings.settings["fullbright"] as FullbrightConfig
-        fpsColorConfig = Settings.settings["fpsColors"] as FpsColorConfig
-        radarConfig = Settings.settings["radar"] as RadarConfig
-        waypointConfig = Settings.settings["waypoints"] as WaypointConfig
         miscConfig = Settings.settings["misc"] as MiscConfig
         LOGGER.info("Settings loaded")
+        Settings()
         Mods()
-        LOGGER.info("GavinsMod initialized")
+        modsToLoad.forEach(Consumer { m: Mod -> Mods.addMod(m) })
         guiList[ModCategory.MOVEMENT] = GuiMovement()
         guiList[ModCategory.COMBAT] = GuiCombat()
         guiList[ModCategory.ESP] = GuiESP()
@@ -79,13 +73,16 @@ class GavinsMod : ModInitializer {
         gui = GuiMainMenu(guisWithChildren)
         guiSettings = GuiSettings()
         modCommands = ModCommands()
+
+        LOGGER.info("GavinsMod initialized")
     }
 
     companion object {
 
         val guiList = HashMap<ModCategory, GuiMod>()
 
-
+        private val modsToLoad = ArrayList<Mod>()
+        
         /**
          * The logger of the mod.
          */
@@ -94,16 +91,8 @@ class GavinsMod : ModInitializer {
 
         @JvmStatic
         fun addMod(mod: Mod) {
-            Mods.addMod(mod)
-            val category = mod.modCategory
-            guiList[category] = guiList[category]!!.reload()
-            guiList.values.forEach(Consumer { g: Gui -> g.isParent = true })
-            val guisWithChildren = ArrayList<Gui>()
-            guiList.values.forEach { guisWithChildren.add(it) }
-            gui = GuiMainMenu(guisWithChildren)
-            LOGGER.info("Added mod: " + mod.name)
-            if(mod.hasSettings())
-                guiSettings.reloadGui()
+            modsToLoad.add(mod)
+            LOGGER.info("Adding mod: " + mod.name)
         }
 
         /**
@@ -131,30 +120,6 @@ class GavinsMod : ModInitializer {
          */
         lateinit var tracerConfig: TracerConfig
 
-        /**
-         * The xray config.
-         */
-        lateinit var xrayConfig: XrayConfig
-
-        /**
-         * The fullbright config.
-         */
-        lateinit var fullbrightConfig: FullbrightConfig
-
-        /**
-         * The FPS Color config.
-         */
-        lateinit var fpsColorConfig: FpsColorConfig
-
-        /**
-         * The radar config.
-         */
-        lateinit var radarConfig: RadarConfig
-
-        /**
-         * The waypoint config.
-         */
-        lateinit var waypointConfig: WaypointConfig
 
         /**
          * The misc config.
@@ -174,12 +139,14 @@ class GavinsMod : ModInitializer {
          */
         @JvmStatic
         fun isEnabled(mod: Type): Boolean {
-            return Mods.getMod(mod.chatCommand).isActive
+            val m = Mods.getMod(mod.chatCommand) ?: return false
+            return m.isActive
         }
 
         @JvmStatic
         fun isEnabled(chatCommand: String): Boolean {
-            return Mods.getMod(chatCommand).isActive
+            val mod = Mods.getMod(chatCommand) ?: return false
+            return mod.isActive
         }
 
         /**

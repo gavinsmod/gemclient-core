@@ -49,7 +49,8 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modImplementation "net.fabricmc:fabric-language-kotlin:1.9.1+kotlin.$kotlin_version"
-    modImplementation "com.peasenet.util:gavinsmod-events:0.0.3"
+    modImplementation "com.peasenet.util:gavinsmod-events:0.0.4"
+    modImplementation "com.peasenet:gavui:0.0.10"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
@@ -97,11 +98,11 @@ publishing {
 }
 compileKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
