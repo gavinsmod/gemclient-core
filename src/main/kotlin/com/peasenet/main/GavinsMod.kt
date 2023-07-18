@@ -28,7 +28,6 @@ import com.peasenet.gui.GuiSettings
 import com.peasenet.gui.mod.*
 import com.peasenet.mods.Mod
 import com.peasenet.mods.ModCategory
-import com.peasenet.mods.Type
 import com.peasenet.util.ModCommands
 import net.fabricmc.api.ModInitializer
 import org.slf4j.Logger
@@ -140,30 +139,6 @@ class GavinsMod : ModInitializer {
         private var modCommands: ModCommands? = null
 
         /**
-         * Gets whether the given mod is enabled.
-         * @deprecated
-         * @param mod - The mod type to check.
-         * @return Whether the mod is enabled.
-         */
-        @JvmStatic
-        fun isEnabled(mod: Type): Boolean {
-            val m = Mods.getMod(mod.chatCommand) ?: return false
-            return m.isActive
-        }
-
-        @JvmStatic
-                /**
-                 * Gets whether the given mod is enabled.
-                 *
-                 * @param chatCommand - The chat command of the mod to check.
-                 * @return Whether the mod is enabled.
-                 */
-        fun isEnabled(chatCommand: String): Boolean {
-            val mod = Mods.getMod(chatCommand) ?: return false
-            return mod.isActive
-        }
-
-        /**
          * Sets whether the given mod is enabled.
          *
          * @param mod     - The mod type to set.
@@ -200,5 +175,17 @@ class GavinsMod : ModInitializer {
             get() = Mods.mods.stream()
                 .filter { mod: Mod -> mod.isActive && mod.modCategory !== ModCategory.GUI && mod.chatCommand.equals("textoverlay") }
                 .sorted(Comparator.comparing(Mod::name))
+
+        /**
+         * Gets whether the given mod is enabled.
+         *
+         * @param chatCommand - The chat command of the mod to check.
+         * @return Whether the mod is enabled.
+         */
+        @JvmStatic
+        fun isEnabled(chatCommand: String): Boolean {
+            val mod = Mods.getMod(chatCommand) ?: return false
+            return mod.isActive
+        }
     }
 }

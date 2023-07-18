@@ -19,7 +19,9 @@
  */
 package com.peasenet.mods
 
-import com.peasenet.config.*
+import com.peasenet.config.EspConfig
+import com.peasenet.config.MiscConfig
+import com.peasenet.config.TracerConfig
 import com.peasenet.gavui.Gui
 import com.peasenet.main.GavinsModClient
 import com.peasenet.main.Mods
@@ -137,7 +139,11 @@ abstract class Mod(
      * @param message The message to send.
      */
     private fun sendMessage(message: String?) {
-        if (miscConfig.isMessages && !reloading) GavinsModClient.player!!.sendMessage(Text.literal(message), false)
+        if (Settings.getConfig<MiscConfig>("misc").isMessages && !reloading) GavinsModClient.player!!.sendMessage(
+            Text.literal(
+                message
+            ), false
+        )
     }
 
     override fun onEnable() {

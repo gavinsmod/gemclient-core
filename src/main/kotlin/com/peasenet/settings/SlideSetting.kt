@@ -34,23 +34,21 @@ class SlideSetting(builder: SettingBuilder) : Setting() {
     override lateinit var gui: GuiSlider
 
     init {
-        val slider =
-            GuiBuilder()
-                .setWidth(builder.getWidth())
-                .setHeight(builder.getHeight())
-                .setSlideValue(builder.getValue())
-                .setTitle(builder.getTitle())
-                .setCallback(builder.getCallback())
-                .setTransparency(builder.getTransparency())
-                .setDefaultMaxChildren(builder.getMaxChildren())
-                .setMaxChildren(builder.getMaxChildren())
-                .setTopLeft(builder.getTopLeft())
+         gui =
+             GuiBuilder()
+                 .setWidth(builder.getWidth())
+                 .setHeight(builder.getHeight())
+                 .setSlideValue(builder.getValue())
+                 .setTitle(builder.getTitle())
+                 .setCallback(builder.getCallback())
+                 .setTransparency(builder.getTransparency())
+                 .setDefaultMaxChildren(builder.getMaxChildren())
+                 .setMaxChildren(builder.getMaxChildren())
+                 .setTopLeft(builder.getTopLeft())
                 .buildSlider()
     }
     
-    companion object {
-
-    }
+    companion object;
 
     /**
      * The current float value of the setting.
