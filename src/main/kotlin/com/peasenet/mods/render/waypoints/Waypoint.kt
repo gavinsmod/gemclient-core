@@ -25,6 +25,7 @@ import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.Vec3i
 
 /**
+ * TODO: This needs to be moved to the gem-waypoints module.
  * @author gt3ch1
  * @version 03-23-2023
  * A waypoint is a three-dimensional integer coordinate with a name, color, and can either have

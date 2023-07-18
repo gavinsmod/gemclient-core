@@ -26,6 +26,7 @@ import org.lwjgl.glfw.GLFW
  * @version 03-02-2023
  * An enum containing all the mods.
  */
+@Deprecated("You should not be using this class!", ReplaceWith(""),DeprecationLevel.ERROR)
 enum class Type
 /**
  * A mod enum containing the name, translation key, category, keybinding, and the mod category.

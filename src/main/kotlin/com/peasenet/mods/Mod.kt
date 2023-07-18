@@ -21,7 +21,6 @@ package com.peasenet.mods
 
 import com.peasenet.config.*
 import com.peasenet.gavui.Gui
-import com.peasenet.main.GavinsMod
 import com.peasenet.main.GavinsModClient
 import com.peasenet.main.Mods
 import com.peasenet.main.Settings
@@ -36,10 +35,23 @@ import net.minecraft.text.Text
 import org.lwjgl.glfw.GLFW
 
 /**
+ * The base class for all GEM modules. Extending this class will allow you to have a module that appears
+ * in the specified category's dropdown menu, a keybind, and a chat command to toggle the module.
+ * For an example of extending this class, please visit the [mod-template](https://github.com/gavinsmod/mod-template) repository.
+ * An example of extending this class is shown below:
+ * ~~~kotlin
+ * class MyMod() : Mod("My Mod", "translation.key.mymod", "mymod", ModCategory.MISC)
+ * ~~~
+ * This example will create a mod that uses the name "My Mod" for sorting, a translation key of "translation.key.mymod" for the name of the mod in the GUI and in chat,
+ * a chat command of "mymod" to toggle the mod, and a category of [ModCategory.MISC], as well as an unset keybinding.
+ * @param name - The name of the mod, used for sorting purposes only.
+ * @param translationKey - The translation key, used for rendering the mod's name in the GUI and in chat.
+ * @param chatCommand - The chat command, used for toggling the mod. This does not need to be prefixed by anything.
+ * @param modCategory - The category of the mod. See [ModCategory] for more information.
+ * @param keyBinding - The keybinding used for this mod, by default it should be [GLFW.GLFW_KEY_UNKNOWN], which will not bind a key to this mod.
  * @author gt3ch1
- * @version 04-11-2023
- * The base class for mods. Inheriting this class will allow for creating different mods that have a keybinding,
- * and a gui button based off of the given category.
+ * @version 07-18-2023
+ *
  */
 abstract class Mod(
     override val name: String,
@@ -48,20 +60,28 @@ abstract class Mod(
     final override var modCategory: ModCategory,
     private var keyBinding: KeyBinding
 ) : IMod {
+
     /**
      * Whether this mod is currently deactivating.
      */
-    protected var deactivating = false
+    private var deactivating = false
+
+    /**
+     * Whether this mod is currently active.
+     */
     override var isActive: Boolean = false
 
 
+    /**
+     * Whether this mod is currently deactivating.
+     */
     override val isDeactivating: Boolean
         get() = deactivating
 
     /**
-     * The settings of the mod.
+     * The settings for this mod to be displayed in the settings GUI.
      */
-    protected var modSettings = ArrayList<Gui>()
+    private var modSettings = ArrayList<Gui>()
 
     /**
      * Whether the mod is currently reloading.
@@ -73,6 +93,10 @@ abstract class Mod(
      */
     private var isEnabled = false
 
+    /**
+     * Sets whether this mod should be enabled or not.
+     * @param value - The new state of the mod.
+     */
     fun setEnabled(value: Boolean) {
         isEnabled = value
         isActive = value
@@ -83,6 +107,16 @@ abstract class Mod(
     }
 
 
+    /**
+     * Creates a mod with the given parameters.
+     *
+     * @param name - The name of the mod, used for sorting purposes only.
+     * @param translationKey - The translation key, used for rendering the mod's name in the GUI and in chat.
+     * @param chatCommand - The chat command, used for toggling the mod. This does not need to be prefixed by anything.
+     * @param modCategory - The category of the mod. See [ModCategory] for more information.
+     * @param keyBinding - The keybinding used for this mod. This is optional, with the default value of [GLFW.GLFW_KEY_UNKNOWN], which will not bind a key to this mod,
+     * but will allow the player to bind a key from the Minecraft controls menu.
+     */
     constructor(
         name: String,
         translationKey: String,
@@ -94,7 +128,7 @@ abstract class Mod(
         translationKey,
         chatCommand,
         modCategory,
-        KeyBindUtils.registerKeyBindForType(translationKey, modCategory, keyBinding)
+        KeyBindUtils.registerModKeybind(translationKey, modCategory, keyBinding)
     )
 
     /**
@@ -155,10 +189,19 @@ abstract class Mod(
         }
     }
 
+    /**
+     * Adds a setting to the mod, such as a slider or toggle.
+     * @param setting - The setting to add.
+     * @see Setting
+     */
     fun addSetting(setting: Setting) {
         modSettings.add(setting.gui!!)
     }
 
+    /**
+     * Adds a setting to the mod, such as a label or any other GavUI element.
+     * @param setting - The setting to add.
+     */
     fun addSetting(setting: Gui) {
         modSettings.add(setting)
     }
@@ -184,9 +227,15 @@ abstract class Mod(
         modSettings = ArrayList(settings)
     }
 
+    /**
+     * Gets the world that the player is currently in.
+     */
     override val world: ClientWorld
         get() = client.getWorld()
 
+    /**
+     * Gets the minecraft client instance.
+     */
     val client: IMinecraftClient
         get() = GavinsModClient.minecraftClient
 
@@ -204,8 +253,16 @@ abstract class Mod(
         protected var em: EventManager = EventManager.eventManager
 
         /**
-         * Tracer configuration.
+         * The tracer configuration.
+         * @deprecated. See how to use the new config system in the [Settings] class.
          */
+        @Deprecated(
+            "You should be using the updated settings API as defined in com.peasenet.main.Settings",
+            ReplaceWith(
+                "Settings.getConfig<TracerConfig>(\"tracer\")",
+                "com.peasenet.main.Settings", "com.peasenet.config.TracerConfig"
+            )
+        )
         protected val tracerConfig: TracerConfig
             get() {
                 return Settings.getConfig<TracerConfig>("tracer")
@@ -214,20 +271,29 @@ abstract class Mod(
         /**
          * ESP configuration.
          */
+        @Deprecated(
+            "You should be using the updated settings API as defined in com.peasenet.main.Settings",
+            ReplaceWith(
+                "Settings.getConfig<EspConfig>(\"esp\")",
+                "com.peasenet.main.Settings", "com.peasenet.config.EspConfig"
+            )
+        )
         val espConfig: EspConfig
             get() {
                 return Settings.getConfig<EspConfig>("esp")
             }
 
         /**
-         * The waypoint configuration.
-         */
-//        @JvmStatic
-//        protected var waypointConfig: WaypointConfig = GavinsMod.waypointConfig
-
-        /**
          * The miscellaneous configuration.
          */
+
+        @Deprecated(
+            "You should be using the updated settings API as defined in com.peasenet.main.Settings",
+            ReplaceWith(
+                "Settings.getConfig<MiscConfig>(\"misc\")",
+                "com.peasenet.main.Settings", "com.peasenet.config.MiscConfig"
+            )
+        )
         protected val miscConfig: MiscConfig
             get() {
                 return Settings.getConfig<MiscConfig>("misc")

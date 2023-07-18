@@ -27,14 +27,22 @@ import com.peasenet.gavui.util.callbacks.GuiCallback
 import net.minecraft.text.Text
 
 /**
- * @author gt3ch1
- * @version 03-02-2023
  * A class that represents a mod setting. This class should not be instantiated directly.
+ * For examples of how to use this class, see the [com.peasenet.setitngs] package.
+ * @author GT3CH1
+ * @version 07-18-2023
  */
 abstract class Setting() {
+
+    /**
+     * The GUI used for this setting.
+     */
     open val gui: Gui? = null
 
-
+    /**
+     * Sets the callback for this setting.
+     * Only used for GuiClick and GuiSlider.
+     */
     fun setCallback(callback: GuiCallback) {
         if (gui != null) {
             (gui as? GuiClick)?.setCallback(callback)
@@ -42,15 +50,25 @@ abstract class Setting() {
         }
     }
 
+    /**
+     * Gets the GUI for this setting.
+     */
     open fun getTitle(): Text {
         return gui!!.title
     }
 
+    /**
+     * Gets the width of this setting.
+     */
+    @Deprecated("Unused", ReplaceWith("gui!!.width"))
     open fun getWidth(): Float {
         return gui!!.width
     }
 
-    open fun setPos(pos: PointF) {
+    /**
+     * Sets the position of this setting.
+     */
+    @Deprecated("Unused", ReplaceWith("gui!!.position = pos"))  fun setPos(pos: PointF) {
         gui!!.position = pos
     }
 }

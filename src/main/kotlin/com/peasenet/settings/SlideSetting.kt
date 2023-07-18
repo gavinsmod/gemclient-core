@@ -19,6 +19,7 @@
  */
 package com.peasenet.settings
 
+import com.peasenet.gavui.GuiBuilder
 import com.peasenet.gavui.GuiSlider
 
 /**
@@ -26,30 +27,36 @@ import com.peasenet.gavui.GuiSlider
  * @version 03-02-2023
  * A setting that can be clicked. This is purely dependant on the given callback.
  */
-class SlideSetting(slider: GuiSlider) : Setting() {
+class SlideSetting(builder: SettingBuilder) : Setting() {
     /**
      * The gui used to display the setting.
      */
-    override var gui: GuiSlider = slider
+    override lateinit var gui: GuiSlider
 
+    init {
+        val slider =
+            GuiBuilder()
+                .setWidth(builder.getWidth())
+                .setHeight(builder.getHeight())
+                .setSlideValue(builder.getValue())
+                .setTitle(builder.getTitle())
+                .setCallback(builder.getCallback())
+                .setTransparency(builder.getTransparency())
+                .setDefaultMaxChildren(builder.getMaxChildren())
+                .setMaxChildren(builder.getMaxChildren())
+                .setTopLeft(builder.getTopLeft())
+                .buildSlider()
+    }
+    
     companion object {
-        fun fromSlider(slider: GuiSlider): SlideSetting {
-            return SlideSetting(slider)
-        }
+
     }
 
+    /**
+     * The current float value of the setting.
+     */
     var value: Float
-        /**
-         * Gets the current float value of the setting.
-         *
-         * @return The current float value of the setting.
-         */
         get() = gui.value
-        /**
-         * Sets the current value of the setting.
-         *
-         * @param alpha The new value of the setting.
-         */
         set(alpha) {
             gui.value = alpha
         }

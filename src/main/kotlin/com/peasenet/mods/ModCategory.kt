@@ -19,25 +19,25 @@
 
 package com.peasenet.mods
 
-enum class ModCategory
 /**
  * A mod category that contains a translation key. This is used to separate the mods within the guis.
  *
  * @param translationKey - The translation key for the category.
- */(
-    /**
-     * The translation key for the category.
-     */
+ * @param keybindCategory - The keybind category for the category.
+ * @author GT3CH1
+ */
+enum class ModCategory
+(
     @JvmField val translationKey: String,
     @JvmField val keybindCategory: String
 ) {
-    MOVEMENT("gavinsmod.gui.movement", "gavinsmod.keybinds.movement"),
-    RENDER("gavinsmod.gui.render", "gavinsmod.keybinds.render"),
-    COMBAT("gavinsmod.gui.combat", "gavinsmod.keybinds.combat"),
-    MISC("gavinsmod.gui.misc", "gavinsmod.keybinds.misc"),
-    ESP("gavinsmod.gui.esps", "gavinsmod.keybinds.esps"),
+    MOVEMENT("gavinsmod.gui.movement", KeyBindCategory.MOVEMENT.category),
+    RENDER("gavinsmod.gui.render", KeyBindCategory.RENDER.category),
+    COMBAT("gavinsmod.gui.combat", KeyBindCategory.COMBAT.category),
+    MISC("gavinsmod.gui.misc", KeyBindCategory.MISC.category),
+    ESP("gavinsmod.gui.esps", KeyBindCategory.ESP.category),
     WAYPOINTS("gavinsmod.mod.render.waypoints", "gavinsmod.keybinds.waypoints"),
-    TRACERS("gavinsmod.gui.tracers", "gavinsmod.keybinds.tracers"),
-    GUI("gavinsmod.gui.gui", "gavinsmod.keybinds.gui"),
+    TRACERS("gavinsmod.gui.tracers", KeyBindCategory.TRACERS.category),
+    GUI("gavinsmod.gui.gui", KeyBindCategory.GUI.category),
     NONE("none", "none")
 }

@@ -23,9 +23,11 @@ import com.peasenet.gavui.GuiBuilder
 import com.peasenet.gavui.GuiClick
 
 /**
+ * A setting that can be clicked. This is purely dependent on the given callback.
+ * 
+ * @param builder - The [SettingBuilder] used to create this setting.
  * @author gt3ch1
- * @version 03-02-2023
- * A setting that can be clicked. This is purely dependant on the given callback.
+ * @version 07-18-2023
  */
 class ClickSetting(builder: SettingBuilder) : Setting() {
     /**
@@ -36,7 +38,6 @@ class ClickSetting(builder: SettingBuilder) : Setting() {
     /**
      * Creates a new click setting with the given name (?) and translation key.
      *
-     * @param translationKey - The translation key of the setting.
      */
     init {
         gui = GuiBuilder()

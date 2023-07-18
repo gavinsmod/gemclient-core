@@ -23,6 +23,24 @@ import com.peasenet.mods.Mod
 import com.peasenet.mods.ModCategory
 import org.lwjgl.glfw.GLFW
 
+/**
+ * The base class for all combat mods. Extending this class will automatically add the mod to the combat category,
+ * as well as a chat command, GUI element, and an optional keybind.
+ * For example,
+ * ~~~
+ * class ModExampleCombat() : CombatMod("Example Combat", "example_combat", "examplecombat")
+ * ~~~
+ * This class extends the [Mod] class, so it has all the same methods and properties.
+ * 
+ * @param name The name of the mod.
+ * @param translationKey The translation key for the mod's name.
+ * @param chatCommand The chat command for the mod.
+ * @param keyBinding The keybind for the mod. Defaults to [GLFW.GLFW_KEY_UNKNOWN].
+ * @see Mod
+ * 
+ * @author GT3CH1
+ * @version 07-18-2023
+ */
 abstract class CombatMod(
     name: String,
     translationKey: String,

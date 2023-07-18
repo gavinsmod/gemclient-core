@@ -20,33 +20,26 @@
 package com.peasenet.util
 
 import com.peasenet.mods.ModCategory
-import com.peasenet.mods.Type
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
 import net.minecraft.client.option.KeyBinding
 import net.minecraft.client.util.InputUtil
 import org.lwjgl.glfw.GLFW
 
 /**
+ * Used to get and create keybindings for different mods.
  * @author gt3ch1
  * @version 03-02-2023
- * Used to get and create keybindings for different mods.
  */
 object KeyBindUtils {
-    /**
-     * Gets the keybinding for the given mod type.
-     *
-     * @param type The mod type.
-     * @return The keybinding.
-     */
-    private fun getKeyBinding(type: Type): KeyBinding {
-        return KeyBinding(
-            type.translationKey,
-            InputUtil.Type.KEYSYM,
-            type.keyBinding,
-            type.category
-        )
-    }
 
+    /**
+     * Attemps to get a keybinding for a mod.
+     * @param translationKey The translation key for the keybinding.
+     * @param modCategory The mod category for the keybinding.
+     * @param keyBind The keybind for the keybinding. Defaults to [GLFW.GLFW_KEY_UNKNOWN].
+     * 
+     * @returns a keybind
+     */
     private fun getKeyBinding(
         translationKey: String,
         modCategory: ModCategory,
@@ -61,58 +54,16 @@ object KeyBindUtils {
     }
 
     /**
-     * Registers the keybinding for the given mod type.
-     *
-     * @param type The mod type.
-     * @return The keybinding.
+     * Registers a keybind for a mod.
+     * @param translationKey The translation key for the keybinding.
+     * @param modCategory The mod category for the keybinding.
+     * @param keyBind The keybind for the keybinding. Defaults to [GLFW.GLFW_KEY_UNKNOWN].
      */
-    fun registerKeyBindForType(type: Type): KeyBinding {
-        return try {
-            KeyBindingHelper.registerKeyBinding(getKeyBinding(type))
-        } catch (e: Exception) {
-            if (type.keyBinding == GLFW.GLFW_KEY_UNKNOWN) {
-                registerEmptyKeyBind(type)
-            } else getKeyBinding(type)
-        }
-    }
-
-
-    fun registerKeyBindForType(
+    fun registerModKeybind(
         translationKey: String,
         modCategory: ModCategory,
         keyBind: Int = GLFW.GLFW_KEY_UNKNOWN
     ): KeyBinding {
-        if (keyBind == GLFW.GLFW_KEY_UNKNOWN)
-            return registerEmptyKeyBind(translationKey, modCategory.keybindCategory)
         return KeyBindingHelper.registerKeyBinding(getKeyBinding(translationKey, modCategory,keyBind))
     }
-
-    /**
-     * Registers and returns the keybinding for the given mod type.
-     *
-     * @param type The mod type.
-     * @return The keybinding.
-     */
-    fun registerEmptyKeyBind(type: Type): KeyBinding {
-        return KeyBindingHelper.registerKeyBinding(
-            KeyBinding(
-                type.translationKey,
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_UNKNOWN,
-                type.category
-            )
-        )
-    }
-
-    fun registerEmptyKeyBind(translationKey: String, keyBindCategory: String): KeyBinding {
-        return KeyBindingHelper.registerKeyBinding(
-            KeyBinding(
-                translationKey,
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_UNKNOWN,
-                keyBindCategory
-            )
-        )
-    }
-
 }

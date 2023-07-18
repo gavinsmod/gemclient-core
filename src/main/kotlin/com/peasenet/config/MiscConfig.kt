@@ -21,9 +21,9 @@ package com.peasenet.config
 
 /**
  * The miscellaneous configuration.
- *
+ * The key is "misc".
  * @author gt3ch1
- * @version 03-02-2023
+ * @version 07-18-2023
  */
 class MiscConfig : Config<MiscConfig>() {
     var isMessages = true

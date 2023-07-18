@@ -21,7 +21,8 @@
 package com.peasenet.util
 
 /**
- *
+ * The dimension of a Minecraft world.
+ * @param dimension The dimension of a Minecraft world. Either "overworld", "the_nether", or "the_end".
  * @author gt3ch1
  * @version 03/22/2023
  */
@@ -31,6 +32,9 @@ enum class Dimension(val dimension: String) {
     END("the_end");
 
     companion object {
+        /**
+         * Gets the dimension from a string.
+         */
         fun fromValue(dim: String): Dimension {
             for (d in Dimension.values()) {
                 if (d.dimension == dim)

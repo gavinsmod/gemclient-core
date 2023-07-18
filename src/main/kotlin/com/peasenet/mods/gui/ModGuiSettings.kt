@@ -23,15 +23,13 @@ import com.peasenet.gavui.GuiBuilder
 import com.peasenet.gavui.util.GavUISettings
 import com.peasenet.main.GavinsMod
 import com.peasenet.main.GavinsModClient
-import com.peasenet.mods.Mod
-import com.peasenet.mods.Type
 import com.peasenet.settings.SettingBuilder
 import org.lwjgl.glfw.GLFW
 
 /**
+ * A mod that allows the player to configure certain settings of gavinsmod.
  * @author gt3ch1
  * @version 03-13-2023
- * A mod that allows the player to configure certain settings of gavinsmod.
  */
 class ModGuiSettings : GuiMod(
     "Settings",

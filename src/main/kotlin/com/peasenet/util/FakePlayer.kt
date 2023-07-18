@@ -24,14 +24,19 @@ import com.peasenet.main.GavinsModClient.Companion.player
 import net.minecraft.client.network.OtherClientPlayerEntity
 
 /**
+ * A fake player entity that can be used to render a player model in the getWorld().
  * @author gt3ch1
  * @version 03-02-2023
- *
- *
- * A fake player entity that can be used to render a player model in the getWorld().
  */
 class FakePlayer : OtherClientPlayerEntity(minecraftClient.getWorld(), player!!.getGameProfile()) {
+    /**
+     * The minecraft world
+     */
     private val world = minecraftClient.getWorld()
+
+    /**
+     * The minecraft player
+     */
     private val player = minecraftClient.getPlayer()
 
     /**

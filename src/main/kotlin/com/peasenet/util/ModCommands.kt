@@ -32,9 +32,9 @@ import com.peasenet.util.listeners.OnChatSendListener
 import net.minecraft.client.resource.language.I18n
 
 /**
+ * A class that handles chat commands for all mods.
  * @author gt3ch1
  * @version 04-11-2023
- * A class that handles chat commands for all mods.
  */
 class ModCommands : OnChatSendListener {
     init {

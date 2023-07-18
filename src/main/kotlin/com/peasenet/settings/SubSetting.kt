@@ -23,9 +23,10 @@ import com.peasenet.gavui.GuiBuilder
 import com.peasenet.gavui.GuiScroll
 
 /**
+ * A setting that contains multiple sub settings within a dropdown element.
+ * @param builder The SettingBuilder to use.
  * @author gt3ch1
  * @version 03-02-2023
- * A setting that contains multiple sub settings within a dropdown element.
  */
 class SubSetting(builder: SettingBuilder) : Setting() {
     /**

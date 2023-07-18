@@ -21,8 +21,27 @@ package com.peasenet.mods.esp
 
 import com.peasenet.mods.Mod
 import com.peasenet.mods.ModCategory
+import com.peasenet.util.listeners.BlockEntityRenderListener
 import org.lwjgl.glfw.GLFW
 
+/**
+ * The base class for all esp mods. Extending this class will automatically add the mod to the esp category,
+ * as well as a chat command, GUI element, and an optional keybind.
+ * For example,
+ * ~~~
+ * class ModExampleEsp() : EspMod("Example Esp", "example_esp", "exampleesp")
+ * ~~~
+ * This class extends the [Mod] class, so it has all the same methods and properties.
+ * By extending this class, you must implement the [BlockEntityRenderListener] interface.
+ * @param name The name of the mod.
+ * @param translationKey The translation key for the mod's name.
+ * @param chatCommand The chat command for the mod.
+ * @param keyBinding The keybind for the mod. Defaults to [GLFW.GLFW_KEY_UNKNOWN].
+ * @see Mod
+ *
+ * @author GT3CH1
+ * @version 07-18-2023
+ */
 abstract class EspMod(
     name: String,
     translationKey: String,
@@ -34,4 +53,4 @@ abstract class EspMod(
     chatCommand,
     ModCategory.ESP,
     keyBinding
-)
+), BlockEntityRenderListener

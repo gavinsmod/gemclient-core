@@ -25,9 +25,10 @@ import com.peasenet.gavui.color.Color
 import com.peasenet.gavui.color.Colors
 
 /**
- * @author gt3ch1
- * @version 03-02-2023
  * A setting that allows the user to change a color value.
+ * @param builder - The setting builder.
+ * @author gt3ch1
+ * @version 07-18-2023
  */
 class ColorSetting(builder: SettingBuilder) : Setting() {
     /**
@@ -40,7 +41,7 @@ class ColorSetting(builder: SettingBuilder) : Setting() {
     init {
         gui = GuiBuilder()
             .setWidth(builder.getWidth())
-            .setHeight(10f)
+            .setHeight(builder.getHeight())
             .setTitle(builder.getTitle())
             .setCycleSize(Colors.COLORS.size)
             .setCurrentCycleIndex(Colors.getColorIndex(builder.getColor()))

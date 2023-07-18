@@ -23,6 +23,24 @@ import com.peasenet.mods.Mod
 import com.peasenet.mods.ModCategory
 import org.lwjgl.glfw.GLFW
 
+/**
+ * The base class for all render mods. Extending this class will automatically add the mod to the render category,
+ * as well as a chat command, GUI element, and an optional keybind.
+ * For example,
+ * ~~~
+ * class ModExampleRender() : RenderMod("Example Render", "example_render", "examplerender")
+ * ~~~
+ * This class extends the [Mod] class, so it has all of the same methods and properties.
+ *
+ * @param name The name of the mod.
+ * @param translationKey The translation key for the mod's name.
+ * @param chatCommand The chat command for the mod.
+ * @param keyBinding The keybind for the mod. Defaults to [GLFW.GLFW_KEY_UNKNOWN].
+ * @see Mod
+ *
+ * @author GT3CH1
+ * @version 07-18-2023
+ */
 abstract class RenderMod(
     name: String, translationKey: String, chatCommand: String,
     modCategory: ModCategory = ModCategory.RENDER, keyBinding: Int = GLFW.GLFW_KEY_UNKNOWN

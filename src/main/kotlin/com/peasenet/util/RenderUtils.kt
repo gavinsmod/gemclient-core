@@ -21,9 +21,7 @@ package com.peasenet.util
 
 import com.mojang.blaze3d.systems.RenderSystem
 import com.peasenet.gavui.color.Color
-import com.peasenet.main.GavinsMod
 import com.peasenet.main.GavinsModClient
-import com.peasenet.main.Settings
 import com.peasenet.mixinterface.ISimpleOption
 import com.peasenet.util.PlayerUtils.getNewPlayerPosition
 import com.peasenet.util.event.BlockEntityRenderEvent
@@ -37,7 +35,6 @@ import net.minecraft.client.render.*
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.entity.Entity
-import net.minecraft.util.hit.HitResult
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 import org.joml.Matrix4f
@@ -46,7 +43,7 @@ import java.util.function.Consumer
 
 /**
  * @author gt3ch1
- * @version 04-11-2023
+ * @version 07-18-2023
  * A utility class for rendering tracers and esp's.
  */
 object RenderUtils {
@@ -124,8 +121,12 @@ object RenderUtils {
         resetRenderSystem()
     }
 
+    /**
+     * Processes events for rendering block tracers or esp's in the world.
+     * @param context The world render context.
+     */
     @JvmStatic
-    fun beforeBlockOutline(context: WorldRenderContext, h: HitResult?): Boolean {
+    fun beforeBlockOutline(context: WorldRenderContext): Boolean {
         CHUNK_RADIUS = GavinsModClient.minecraftClient.options.viewDistance.value
         val minecraft = MinecraftClient.getInstance()
         val level = minecraft.world
@@ -373,29 +374,49 @@ object RenderUtils {
             if (newValue < 0.0) newValue = 0.0
             if (newValue > maxGamma) newValue = maxGamma.toDouble()
             val newGamma = GavinsModClient.minecraftClient.options.gamma
-            if (newGamma.value != newValue) {
+            if (newGamma.value != newValue ) {
                 val newGamma2 = (newGamma as ISimpleOption<Double>)
                 newGamma2.forceSetValue(newValue)
             }
         }
+
+    /**
+     * Whether the gamma is set to the full bright value, 16.0.
+     */
     val isHighGamma: Boolean
         get() = gamma == 16.0
+
+    /**
+     * Whether the gamma is set to the last gamma value as defined by the player.
+     */
     val isLastGamma: Boolean
         get() = gamma <= LAST_GAMMA
 
+    /**
+     * Stores the current gamma value as the last gamma value.
+     */
     fun setLastGamma() {
         if (gamma > 1) return
         LAST_GAMMA = gamma
     }
 
+    /**
+     * Returns the last gamma value before the gamma was set to full bright.
+     */
     fun getLastGamma(): Double {
         return LAST_GAMMA
     }
 
+    /**
+     * Increments the gamma value by 0.2f for a smooth transition. 
+     */
     private fun fadeGammaUp() {
         gamma += 0.2f
     }
 
+    /**
+     * Decrements the gamma value by 0.2f for a smooth transition.
+     */
     private fun fadeGammaDown() {
         gamma -= 0.2f
         if (gamma < getLastGamma()) gamma = getLastGamma()

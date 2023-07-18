@@ -22,7 +22,6 @@ package com.peasenet.util
 import com.peasenet.main.GavinsMod
 import com.peasenet.main.GavinsModClient
 import com.peasenet.mods.Mod
-import com.peasenet.mods.Type
 import com.peasenet.util.event.EventManager
 import com.peasenet.util.event.PlayerAttackEvent
 import com.peasenet.util.math.Rotation
@@ -35,9 +34,9 @@ import net.minecraft.util.Hand
 import net.minecraft.util.math.Vec3d
 
 /**
+ * A helper class with utilities relating to the player.
  * @author gt3ch1
  * @version 04-11-2023
- * A helper class with utilities relating to the player.
  */
 object PlayerUtils {
     private var lastAttackTime = 0
@@ -119,11 +118,11 @@ object PlayerUtils {
         if (player?.getAbilities() == null) return
         val abilities = player.getAbilities()
         abilities.allowFlying =
-            GavinsMod.isEnabled(Type.FLY) || abilities.creativeMode || GavinsMod.isEnabled(Type.NO_CLIP)
+            GavinsMod.isEnabled("fly") || abilities.creativeMode || GavinsMod.isEnabled("noclip")
 
-        if (GavinsMod.isEnabled(Type.FLY) && GavinsMod.isEnabled(Type.NO_CLIP)) abilities.flying = true
+        if (GavinsMod.isEnabled("fly") && GavinsMod.isEnabled("noclip")) abilities.flying = true
 
-        if (!abilities.creativeMode && !GavinsMod.isEnabled(Type.FLY) && !GavinsMod.isEnabled(Type.NO_CLIP)) abilities.flying =
+        if (!abilities.creativeMode && !GavinsMod.isEnabled("fly") && !GavinsMod.isEnabled("noclip")) abilities.flying =
             false
     }
 
@@ -168,7 +167,7 @@ object PlayerUtils {
         if (player != null) {
             if (player.getFallDistance() <= (if (isFalling) 1 else 2)) return
             if (player.isSneaking() && !fallSpeedCanDamage() && player.isFallFlying()) return
-            if (GavinsMod.isEnabled(Type.NO_FALL)) {
+            if (GavinsMod.isEnabled("noclip")) {
                 player.getNetworkHandler().sendPacket(OnGroundOnly(true))
             }
         }

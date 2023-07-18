@@ -22,13 +22,13 @@ package com.peasenet.main
 import com.peasenet.mods.Mod
 import com.peasenet.mods.gui.ModGui
 import com.peasenet.mods.gui.ModGuiSettings
-import com.peasenet.mods.misc.ModCommands
 
 /**
- * A placeholder class that initializes all the mods, and contains a few methods for adding/getting to that list.
  *
+ * The class that handles keeping track of GEMs. Initializing this class will also initialize 
+ * the main GUI and the settings GUI.
  * @author gt3ch1
- * @version 03-02-2023
+ * @version 07-18-2023
  */
 class Mods {
 
@@ -38,12 +38,16 @@ class Mods {
     }
 
     companion object {
+
+        /**
+         * The map of mods, with their chat command as the key, and the mod as the value.
+         */
         private val modMap = HashMap<String, Mod>()
 
         @JvmStatic
         val mods: ArrayList<Mod>
             /**
-             * Gets the list of mods.
+             * Gets the list of mods in sorted order as defined by the mod's name.
              *
              * @return The list of mods.
              */
@@ -59,19 +63,24 @@ class Mods {
         /**
          * Gets a mod from the given name.
          *
-         * @param name - The name of the mod
-         * @return The mod with the given name.
+         * @param chatCommand - The chat command of the mod
+         * @return The mod with the given chat command.
          */
         @JvmStatic
-        fun getMod(name: String): Mod? {
-            if (modMap[name] == null)
+        fun getMod(chatCommand: String): Mod? {
+            if (modMap[chatCommand] == null)
                 return null;
-            return modMap[name]!!
+            return modMap[chatCommand]!!
         }
 
+        /**
+         * Gets whether the given mod with the chat command is active.
+         * 
+         * @param chatCommand - The chat command of the mod.
+         */
         @JvmStatic
-        fun isActive(name: String): Boolean {
-            val mod: Mod = getMod(name) ?: return false
+        fun isActive(chatCommand: String): Boolean {
+            val mod: Mod = getMod(chatCommand) ?: return false
             return mod.isActive
         }
 

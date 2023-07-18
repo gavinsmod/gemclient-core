@@ -19,12 +19,46 @@
 
 package com.peasenet.mods
 
+/**
+ * A list of categories for keybinds, which will be shown in the 
+ * keybinds menu within Minecraft.
+ * 
+ * @author GT3CH1
+ * @version 07-18-2023
+ */
 enum class KeyBindCategory(val category: String) {
+    /**
+     * The movement category.
+     */
     MOVEMENT("gavinsmod.keybinds.movement"),
+    
+    /**
+     * The render category.
+     */
     RENDER("gavinsmod.keybinds.render"),
+    
+    /**
+     * The combat category.
+     */
     COMBAT("gavinsmod.keybinds.combat"),
+    
+    /**
+     * The misc category.
+     */
     MISC("gavinsmod.keybinds.misc"),
+    
+    /**
+     * The ESP category.
+     */
     ESP("gavinsmod.keybinds.esp"),
+    
+    /**
+     * The tracers category.
+     */
     TRACERS("gavinsmod.keybinds.tracers"),
+    
+    /**
+     * The GUI category.
+     */
     GUI("gavinsmod.keybinds.gui"),
 }

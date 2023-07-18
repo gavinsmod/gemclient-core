@@ -31,11 +31,26 @@ import com.peasenet.util.listeners.EntityRenderListener
 import org.lwjgl.glfw.GLFW
 
 /**
- *
- *
- *
- * @author gt3ch1
- * @version 04/11/2023
+ * The base class for all tracer mods. Extending this class will automatically add the mod to the tracer category,
+ * as well as a chat command, GUI element, and an optional keybind.
+ * For example,
+ * ~~~
+ * class ModExampleTracer() : TracerMod("Example Tracer", "example_tracer", "exampletracer")
+ * ~~~
+ * This class extends the [Mod] class, so it has all the same methods and properties. 
+ * Please note that by extending this class, you will have to implement all 
+ * the methods from the [EntityRenderListener], [CameraBobListener], and [BlockEntityRenderListener] interfaces.
+ * You may also need to include gavinsmod-events in your dependencies.
+ * @param name The name of the mod.
+ * @param translationKey The translation key for the mod's name.
+ * @param chatCommand The chat command for the mod.
+ * @param keyBinding The keybind for the mod. Defaults to [GLFW.GLFW_KEY_UNKNOWN].
+ * @see Mod
+ * @see EntityRenderListener
+ * @see CameraBobListener
+ * @see BlockEntityRenderListener
+ * @author GT3CH1
+ * @version 07-18-2023
  */
 abstract class TracerMod(
     name: String,

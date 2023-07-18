@@ -20,10 +20,10 @@
 package com.peasenet.config
 
 /**
- * The configuration for tracers.
- *
+ * The configuration for tracers. This is stored in the core library as there are multiple GEMs that use this.
+ * The key is "tracer".
  * @author gt3ch1
- * @version 04-11-2023
+ * @version 07-18-2023
  */
 class TracerConfig : TracerEspConfig<EspConfig>() {
     init {

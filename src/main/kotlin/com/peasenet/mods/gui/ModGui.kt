@@ -24,9 +24,9 @@ import com.peasenet.main.GavinsModClient
 import org.lwjgl.glfw.GLFW
 
 /**
+ * A mod that allows the player to see a menu of all the mods by pressing the keybind.
  * @author gt3ch1
  * @version 03-02-2023
- * A mod that allows the player to see a menu of all the mods by pressing the keybind.
  */
 class ModGui : GuiMod(
     "GUI",

@@ -21,7 +21,6 @@ package com.peasenet.main
 
 import com.peasenet.mixinterface.IClientPlayerEntity
 import com.peasenet.mixinterface.IMinecraftClient
-import com.peasenet.mods.Mod
 import com.peasenet.util.RenderUtils
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
@@ -31,7 +30,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents.AfterEntiti
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents.BeforeBlockOutline
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.hit.HitResult
-import net.minecraft.world.LightType
 
 /**
  * @author gt3ch1
@@ -53,10 +51,9 @@ class GavinsModClient : ClientModInitializer {
                 context
             )
         })
-        WorldRenderEvents.BEFORE_BLOCK_OUTLINE.register(BeforeBlockOutline { renderContext: WorldRenderContext, hitResult: HitResult? ->
+        WorldRenderEvents.BEFORE_BLOCK_OUTLINE.register(BeforeBlockOutline { renderContext: WorldRenderContext, _: HitResult? ->
             RenderUtils.beforeBlockOutline(
-                renderContext,
-                hitResult
+                renderContext
             )
         })
     }

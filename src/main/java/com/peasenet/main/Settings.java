@@ -37,9 +37,11 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 
 /**
- * @author gt3ch1
- * @version 7-17-2023
- * A class that contains all the settings for the mod.
+ * The core settings class for gemclient-core. This class is responsible for reading, storing, adding, and saving various
+ * configurations for any GEM.
+ * 
+ * @author GT3CH1
+ * @version 7-18-2023
  */
 public class Settings {
 
@@ -115,7 +117,7 @@ public class Settings {
         }
     }
     /**
-     * Saves the current settings to mods/gavinsmod/settings.json
+     * Saves the current settings to <pre>mods/gavinsmod/settings.json</pre>
      */
     public static void save() {
         // open the mods folder
