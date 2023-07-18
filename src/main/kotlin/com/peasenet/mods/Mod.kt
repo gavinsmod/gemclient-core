@@ -83,7 +83,7 @@ abstract class Mod(
     /**
      * The settings for this mod to be displayed in the settings GUI.
      */
-    private var modSettings = ArrayList<Gui>()
+    protected var modSettings = ArrayList<Gui>()
 
     /**
      * Whether the mod is currently reloading.
