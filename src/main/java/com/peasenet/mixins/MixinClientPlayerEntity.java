@@ -53,11 +53,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(ClientPlayerEntity.class)
 public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity implements IClientPlayerEntity {
+    
+    /**
+     * The network handler used to send and receive packets.
+     */
     @Shadow
     @Final
-    public
-    ClientPlayNetworkHandler networkHandler;
+    public ClientPlayNetworkHandler networkHandler;
 
+    /**
+     * Creates a new MixinClientPlayerEntity. You do not need to call this.
+     * @param world - The world the player is in.
+     * @param profile - The player's profile.
+     */
     public MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
         super(world, profile);
     }
@@ -77,7 +85,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
         super.setYaw(yaw);
     }
 
-    public Vec3d getPos() {
+    public @NotNull Vec3d getPos() {
         return super.getPos();
     }
 

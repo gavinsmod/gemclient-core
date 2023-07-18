@@ -24,7 +24,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.ToNumberPolicy;
 import com.google.gson.stream.JsonReader;
-import com.peasenet.config.*;
+import com.peasenet.config.Config;
+import com.peasenet.config.EspConfig;
+import com.peasenet.config.MiscConfig;
+import com.peasenet.config.TracerConfig;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -35,7 +38,7 @@ import java.util.HashMap;
 
 /**
  * @author gt3ch1
- * @version 7/5/2022
+ * @version 7-17-2023
  * A class that contains all the settings for the mod.
  */
 public class Settings {
@@ -44,6 +47,9 @@ public class Settings {
      * The list of all settings and their values.
      */
     public static final HashMap<String, Config<?>> settings = new HashMap<>();
+    /**
+     * A set of default settings.
+     */
     public static final HashMap<String, Config<?>> defaultSettings = new HashMap<>();
 
     static {
@@ -72,6 +78,19 @@ public class Settings {
             settings.put(key, value.readFromSettings());
         }
     }
+
+    /**
+     * Fetches a configuration from the settings file.
+     * <pre>
+     * {@code 
+     *  var cfg = Settings.fetchConfig(TracerConfig.class, "tracer");
+     *  ...
+     * }
+     * </pre>
+     * @param clazz - The class of the configuration.
+     * @param key   - The key of the configuration.
+     * @return - The configuration.
+     */
     @SuppressWarnings("rawtypes")
     public static Config fetchConfig(Class<? extends Config> clazz, String key) {
         // open the settings file
@@ -92,14 +111,6 @@ public class Settings {
             return defaultSettings.get(key);
         }
     }
-
-    /**
-     * Initializes the settings.
-     */
-    public static void initialize() {
-       
-    }
-
     /**
      * Saves the current settings to mods/gavinsmod/settings.json
      */
@@ -119,17 +130,43 @@ public class Settings {
         }
     }
 
+    /**
+     * Adds a config to the settings.
+     * <pre>
+     *     {@code
+     *     Settings.addConfig(new TracerConfig());
+     *     }
+     * </pre>
+     * @param config - The config to add.
+     */
     public static void addConfig(Config<?> config) {
         defaultSettings.put(config.getKey(), config);
         settings.put(config.getKey(), config.readFromSettings());
     }
 
+    /**
+     * Adds a config to the settings.
+     * @deprecated 
+     * @param key - The key of the config.
+     * @param config - The config to add.
+     */
     public static void addConfig(String key, Config<?> config) {
         defaultSettings.put(key, config);
         settings.put(key, config.readFromSettings());
     }
 
-    // parameterized function, so that a method call may be Settings.getConfig<WaypointConfig>("waypoints")
+    /**
+     * Fetches and mutates a configuration from settings.
+     * <pre>
+     *     {@code
+     *      var cfg = Settings.getConfig<TracerConfig>("tracer");
+     *      cfg.beehiveTracerColor = ...
+     *     }
+     * </pre>
+     * @param key - The key of the configuration.
+     * @param <T> - The type of the configuration.
+     * @return The configuration with the given key.
+     */
     @SuppressWarnings("unchecked")
     public static <T extends Config<?>> T getConfig(String key) {
         var cfg = (T) settings.get(key);
@@ -146,20 +183,18 @@ public class Settings {
     }
 
     /**
-     * Ensures that the base settings (Tracer, Misc, ESP) are initialized.
+     * Loads a configuration from the settings file.
+     * @param key - The key of the configuration.
      */
-    private static void ensureInitializedBase() {
-        if (settings.size() == 0) {
-            GavinsMod.LOGGER.info("Initializing settings because they are empty...");
-            initialize();
-        }
-    }
-
     public static void loadConfig(String key) {
 
         settings.get(key).readFromSettings();
     }
 
+    /**
+     * Removes a configuration from the settings.
+     * @param key - The key of the configuration.
+     */
     public static void removeConfig(String key) {
         settings.remove(key);
     }

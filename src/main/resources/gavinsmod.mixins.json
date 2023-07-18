@@ -1,7 +1,6 @@
 {
   "client": [
     "MixinClientPlayerEntity",
-    "MixinKeyBinding",
     "MixinMinecraftClient",
     "MixinSimpleOption"
   ],

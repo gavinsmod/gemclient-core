@@ -38,7 +38,7 @@ import java.util.stream.Stream
 
 /**
  * @author gt3ch1
- * @version 04-11-2023
+ * @version 07-17-2023
  * The main initializer of the mod.
  */
 class GavinsMod : ModInitializer {
@@ -58,8 +58,7 @@ class GavinsMod : ModInitializer {
         val guiRender = GuiRender()
         // fix for issue #55
         val guis = ModGuiUtil.getGuiToggleFromCategory(
-            ModCategory.WAYPOINTS,
-            BoxF(guiRender.position, guiRender.width.toFloat(), guiRender.height.toFloat())
+            ModCategory.WAYPOINTS, BoxF(guiRender.position, guiRender.width.toFloat(), guiRender.height.toFloat())
         )
         guis.forEach { guiRender.addElement(it) }
         guiList[ModCategory.RENDER] = guiRender
@@ -79,20 +78,29 @@ class GavinsMod : ModInitializer {
 
     companion object {
 
+        /**
+         * A hashmap containing the category of each mod category and the corresponding gui.
+         */
         val guiList = HashMap<ModCategory, GuiMod>()
 
+        /**
+         * The list of mods to load upon initialization.
+         */
         private val modsToLoad = ArrayList<Mod>()
-        
+
         /**
          * The logger of the mod.
          */
         @JvmField
         val LOGGER: Logger = LoggerFactory.getLogger("gavinsmod")
 
+        /**
+         * Adds a GEM to the main client to load when the client initializes.
+         * @param mod - The GEM to add.
+         */
         @JvmStatic
         fun addMod(mod: Mod) {
             modsToLoad.add(mod)
-            LOGGER.info("Adding mod: " + mod.name)
         }
 
         /**
@@ -133,7 +141,7 @@ class GavinsMod : ModInitializer {
 
         /**
          * Gets whether the given mod is enabled.
-         *
+         * @deprecated
          * @param mod - The mod type to check.
          * @return Whether the mod is enabled.
          */
@@ -144,6 +152,12 @@ class GavinsMod : ModInitializer {
         }
 
         @JvmStatic
+                /**
+                 * Gets whether the given mod is enabled.
+                 *
+                 * @param chatCommand - The chat command of the mod to check.
+                 * @return Whether the mod is enabled.
+                 */
         fun isEnabled(chatCommand: String): Boolean {
             val mod = Mods.getMod(chatCommand) ?: return false
             return mod.isActive

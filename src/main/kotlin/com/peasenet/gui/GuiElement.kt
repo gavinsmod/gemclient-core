@@ -132,12 +132,10 @@ open class GuiElement
     }
 
     override fun render(drawContext: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
-        val matrixStack = drawContext.matrices
         assert(client != null)
         val tr = client!!.textRenderer
         RenderSystem.setShader { GameRenderer.getPositionProgram() }
         RenderSystem.enableBlend()
-//        overlay.render(drawContext, tr, mouseX, mouseY, delta)
         guis.forEach(Consumer { gui: Gui -> gui.render(drawContext, tr, mouseX, mouseY, delta) })
         if (titleBox != null) {
             titleBox!!.setBackground(GavUISettings.getColor("gui.color.background"))

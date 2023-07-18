@@ -25,20 +25,65 @@ import com.peasenet.gavui.math.PointF;
 import com.peasenet.mods.ModCategory;
 import net.minecraft.text.Text;
 
+/**
+ * A class that allows for the creation of a GuiScroll element given a mod category.
+ * @author GT3CH1
+ * @version 07-17-2023
+ */
 public class GuiMod extends GuiScroll {
 
-    private PointF position;
-    private int width;
-    private int height;
-    private Text title;
-    private ModCategory category;
-    private int maxChildren;
+    /**
+     * The position for the GuiScroll element.
+     */
+    private final PointF position;
+    
+    /**
+     * The width of the GuiScroll element.
+     */
+    private final int width;
+    
+    /**
+     * The height of the GuiScroll element.
+     */
+    private final int height;
+    
+    /**
+     * The title of the GuiScroll element.
+     */
+    private final Text title;
+    
+    /**
+     * The category of the mod(s).
+     */
+    private final ModCategory category;
+    
+    /**
+     * The maximum number of children for the GuiScroll element to be shown on one page.
+     */
+    private final int maxChildren;
 
+    /**
+     * Creates a new GuiScroll element given a position, width, height, title, and category. The maximum number of children is set to 6.
+     * @param position - The position for the GuiScroll element.
+     * @param width - The width of the GuiScroll element.
+     * @param height - The height of the GuiScroll element.
+     * @param title - The title of the GuiScroll element.
+     * @param category - The category of the mod(s).
+     */
     GuiMod(PointF position, int width, int height, Text title, ModCategory category) {
         this(position, width, height, title, category, 6);
     }
 
 
+    /**
+     * Creates a new GuiScroll element given a position, width, height, title, category, and maximum number of children.
+     * @param position - The position for the GuiScroll element.
+     * @param width - The width of the GuiScroll element.
+     * @param height - The height of the GuiScroll element.
+     * @param title - The title of the GuiScroll element.
+     * @param category - The category of the mod(s).
+     * @param maxChildren - The maximum number of children for the GuiScroll element to be shown on one page.
+     */
     GuiMod(PointF position, int width, int height, Text title, ModCategory category, int maxChildren) {
         super(position, width, height, title, maxChildren, ModGuiUtil.getGuiToggleFromCategory(
                 category,
@@ -51,16 +96,5 @@ public class GuiMod extends GuiScroll {
         this.category = category;
         this.maxChildren = maxChildren;
 
-    }
-
-    public GuiMod reload() {
-        return new GuiMod(
-                position,
-                width,
-                height,
-                title,
-                category,
-                maxChildren
-        );
     }
 }
