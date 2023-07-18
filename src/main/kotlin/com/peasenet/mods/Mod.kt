@@ -66,7 +66,7 @@ abstract class Mod(
     /**
      * Whether this mod is currently deactivating.
      */
-    private var deactivating = false
+    protected var deactivating = false
 
     /**
      * Whether this mod is currently active.
