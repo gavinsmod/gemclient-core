@@ -100,7 +100,10 @@ public class Settings {
         try {
             map = json.fromJson(new FileReader(cfgFile), HashMap.class).get(key);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            ensureCfgCreated(cfgFile);
+            settings.put(key, defaultSettings.get(key));
+            save();                                           
+            return defaultSettings.get(key);
         }
         try {
             JsonObject jsonObject = json.toJsonTree(map).getAsJsonObject();
