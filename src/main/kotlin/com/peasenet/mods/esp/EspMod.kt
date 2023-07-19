@@ -21,7 +21,10 @@ package com.peasenet.mods.esp
 
 import com.peasenet.mods.Mod
 import com.peasenet.mods.ModCategory
+import com.peasenet.util.event.data.BlockEntityRender
+import com.peasenet.util.event.data.EntityRender
 import com.peasenet.util.listeners.BlockEntityRenderListener
+import com.peasenet.util.listeners.EntityRenderListener
 import org.lwjgl.glfw.GLFW
 
 /**
@@ -42,7 +45,7 @@ import org.lwjgl.glfw.GLFW
  * @author GT3CH1
  * @version 07-18-2023
  */
-abstract class EspMod(
+class EspMod(
     name: String,
     translationKey: String,
     chatCommand: String,
@@ -53,4 +56,7 @@ abstract class EspMod(
     chatCommand,
     ModCategory.ESP,
     keyBinding
-), BlockEntityRenderListener
+), BlockEntityRenderListener, EntityRenderListener {
+    override fun onEntityRender(er: EntityRender) {}
+    override fun onRenderBlockEntity(er: BlockEntityRender) {}
+}
