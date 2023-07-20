@@ -45,7 +45,7 @@ import org.lwjgl.glfw.GLFW
  * @author GT3CH1
  * @version 07-18-2023
  */
-class EspMod(
+open class EspMod(
     name: String,
     translationKey: String,
     chatCommand: String,
