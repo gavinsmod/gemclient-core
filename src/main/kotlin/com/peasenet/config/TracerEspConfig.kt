@@ -41,6 +41,15 @@ open class TracerEspConfig<E> : Config<TracerEspConfig<E>>() {
         }
 
     /**
+     * The color for signs. Default value is [Colors.WHITE]
+     */
+    var signColor: Color = Colors.WHITE 
+        set(value) {
+            field = value
+            saveConfig()
+        }
+    
+    /**
      * The color for hostile mobs. Default value is [Colors.RED]
      */
     var hostileMobColor: Color = Colors.RED

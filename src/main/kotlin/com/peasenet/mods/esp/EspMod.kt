@@ -56,7 +56,4 @@ open class EspMod(
     chatCommand,
     ModCategory.ESP,
     keyBinding
-), BlockEntityRenderListener, EntityRenderListener {
-    override fun onEntityRender(er: EntityRender) {}
-    override fun onRenderBlockEntity(er: BlockEntityRender) {}
-}
+)

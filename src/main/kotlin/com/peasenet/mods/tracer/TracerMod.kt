@@ -65,17 +65,17 @@ abstract class TracerMod(
     keyBinding
 ), EntityRenderListener, CameraBobListener, BlockEntityRenderListener {
     override fun onEnable() {
-        super.onEnable()
         em.subscribe(BlockEntityRenderListener::class.java, this)
         em.subscribe(EntityRenderListener::class.java, this)
         em.subscribe(CameraBobListener::class.java, this)
+        super.onEnable()
     }
 
     override fun onDisable() {
-        super.onDisable()
         em.unsubscribe(BlockEntityRenderListener::class.java, this)
         em.unsubscribe(EntityRenderListener::class.java, this)
         em.unsubscribe(CameraBobListener::class.java, this)
+        super.onDisable()
     }
 
     override fun onCameraViewBob(c: CameraBob) {
