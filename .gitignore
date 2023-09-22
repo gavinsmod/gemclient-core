@@ -33,3 +33,5 @@ bin/
 run/
 
 .factorypath
+
+src/main/kotlin/com/peasenet/main/Mods.kt

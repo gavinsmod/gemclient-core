@@ -193,7 +193,6 @@ public class Settings {
      */
     public static void loadConfig(String key) {
 
-        settings.get(key).readFromSettings();
     }
 
     /**

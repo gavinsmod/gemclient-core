@@ -28,7 +28,7 @@ import com.peasenet.gavui.color.Colors
 import com.peasenet.gavui.math.PointF
 import com.peasenet.main.GavinsMod
 import com.peasenet.main.GavinsMod.Companion.setEnabled
-import com.peasenet.main.Mods.Companion.mods
+import com.peasenet.main.Mods
 import com.peasenet.main.Settings
 import com.peasenet.mods.Mod
 import com.peasenet.mods.ModCategory
@@ -121,7 +121,7 @@ class GuiSettings : GuiElement(Text.translatable("gavinsmod.gui.settings")) {
     private fun addSettings(parent: Gui, category: ModCategory) {
         val modList = ArrayList<Mod>()
         // get all mods in esp category and have settings then add them to espDropdown
-        mods.stream().filter { m: Mod -> m.modCategory === category && m.hasSettings() }
+        Mods.mods.stream().filter { m: Mod -> m.modCategory === category && m.hasSettings() }
             .forEach { e: Mod -> modList.add(e) }
         for (m in modList) {
             val modSettings = m.settings
