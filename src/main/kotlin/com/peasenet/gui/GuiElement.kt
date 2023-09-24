@@ -40,13 +40,7 @@ import java.util.function.Consumer
  * @version 03-02-2023
  * A parent class that holds all that is needed to render an in game gui.
  */
-open class GuiElement
-/**
- * Creates a new GUI menu with the given title.
- *
- * @param title - The title.
- */
-    (title: Text?) : Screen(title) {
+open class GuiElement(title: Text?) : Screen(title) {
     /**
      * The box that contains the menu title in the top left corner of the screen.
      */
@@ -92,10 +86,16 @@ open class GuiElement
         titleBox!!.isHoverable = false
     }
 
-    override fun mouseScrolled(mouseX: Double, mouseY: Double, scroll: Double): Boolean {
-        guis.forEach(Consumer { gui: Gui -> gui.mouseScrolled(mouseX, mouseY, scroll) })
-        return super.mouseScrolled(mouseX, mouseY, scroll)
+    override fun mouseScrolled(
+        mouseX: Double,
+        mouseY: Double,
+        horizontalAmount: Double,
+        verticalAmount: Double
+    ): Boolean {
+        guis.forEach(Consumer { gui: Gui -> gui.mouseScrolled(mouseX, mouseY, verticalAmount) })
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)
     }
+
 
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
         for (g in guis) if (g.mouseClicked(mouseX, mouseY, button)) {
@@ -132,17 +132,18 @@ open class GuiElement
     }
 
     override fun render(drawContext: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
+
+//        super.render(drawContext, mouseX, mouseY, delta)
         assert(client != null)
         val tr = client!!.textRenderer
-        RenderSystem.setShader { GameRenderer.getPositionProgram() }
-        RenderSystem.enableBlend()
+//        RenderSystem.setShader { GameRenderer.getPositionProgram() }
+//        RenderSystem.enableBlend()
         guis.forEach(Consumer { gui: Gui -> gui.render(drawContext, tr, mouseX, mouseY, delta) })
         if (titleBox != null) {
             titleBox!!.setBackground(GavUISettings.getColor("gui.color.background"))
             titleBox!!.render(drawContext, tr, mouseX, mouseY, delta)
         }
-        RenderUtils.resetRenderSystem()
-        super.render(drawContext, mouseX, mouseY, delta)
+//        RenderUtils.resetRenderSystem()
     }
 
     /**

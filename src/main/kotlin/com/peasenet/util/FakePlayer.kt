@@ -52,7 +52,8 @@ class FakePlayer : OtherClientPlayerEntity(minecraftClient.getWorld(), player!!.
         headYaw = player.getHeadYaw()
         bodyYaw = player.getBodyYaw()
         inventory.clone(player.inventory)
-        minecraftClient.getWorld().addEntity(id, this)
+        this.id = player.id
+        minecraftClient.getWorld().addEntity(this)
     }
 
     /**

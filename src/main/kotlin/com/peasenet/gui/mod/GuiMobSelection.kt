@@ -20,6 +20,7 @@
 
 package com.peasenet.gui.mod
 
+import com.mojang.blaze3d.systems.RenderSystem
 import com.peasenet.gavui.Gui
 import com.peasenet.gavui.GuiBuilder
 import com.peasenet.gavui.GuiClick
@@ -266,8 +267,8 @@ abstract class GuiMobSelection(label: Text) : GuiElement(label) {
     override fun render(drawContext: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
         val matrixStack = drawContext.matrices
 //        guis.forEach { it.render(drawContext, textRenderer, mouseX, mouseY, delta) }
+        super.render(drawContext, mouseX, mouseY, delta)
         search.render(drawContext, mouseX, mouseY, delta)
-//        RenderSystem.disableBlend()
         for (i in 0 until itemsPerPage) {
             if ((pageOffset + i) > visibleItems.size - 1) break
             val block = visibleItems[pageOffset + i]
@@ -282,7 +283,7 @@ abstract class GuiMobSelection(label: Text) : GuiElement(label) {
                     blockY + 16,
                     GavUISettings.getColor("gui.color.enabled").getAsInt(0.5f)
                 )
-                GuiUtil.drawOutline(Colors.WHITE, boxF, matrixStack, 1f)
+                GuiUtil.drawOutline(Colors.WHITE, boxF, matrixStack, 0.5f)
             }
             if (mouseX > blockX && mouseX < blockX + 16 && mouseY > blockY && mouseY < blockY + 16) {
                 drawContext.fill(
@@ -297,8 +298,6 @@ abstract class GuiMobSelection(label: Text) : GuiElement(label) {
             }
             drawContext.drawItem(block, blockX, blockY)
         }
-//        RenderSystem.enableBlend()
-        super.render(drawContext, mouseX, mouseY, delta)
     }
 
     /**
