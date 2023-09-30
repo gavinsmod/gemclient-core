@@ -11,6 +11,7 @@ buildscript {
 plugins {
     id 'fabric-loom' version '1.1-SNAPSHOT'
     id 'maven-publish'
+    id 'signing'
 }
 apply plugin: 'kotlin'
 
@@ -79,23 +80,53 @@ jar {
         rename { "${it}_${project.archivesBaseName}" }
     }
 }
-
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier = 'javadoc'
+    from javadoc.destinationDir
+}
 // configure the maven publication
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+            artifact javadocJar
+            pom {
+                name = "${project.maven_group}:${project.archives_base_name}"
+                description = "A UI library for Minecraft aimed for developers."
+                url = "https://github.com/gavinsmod/gemclient-core"
+                license {
+                    name = "MIT"
+                    url = "https://opensource.org/licenses/MIT"
+                }
+                developers {
+                    developer {
+                        name = "Gavin Pease"
+                        email = "gcpease@peasenet.com"
+                        organization = "GT3CH1"
+                        organizationUrl = "https://github.com/GT3CH1"
+                    }
+                }
+                scm {
+                    connection = "scm:git:git://github.com/gavinsmod/gavinsmod-events.git"
+                    developerConnection = "scm:git:ssh://github.com:gavinsmod/gavinsmod-events.git"
+                    url = "https://github.com/gavinsmod/gavinsmod-events/tree/master"
+                }
+            }
+
         }
     }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
+        maven {
+            name = "SonaType"
+            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            credentials {
+                username = project.findProperty("ossrhUsername")
+                password = project.findProperty("ossrhPassword")
+            }
+        }
     }
 }
+
 compileKotlin {
     kotlinOptions {
         jvmTarget = "17"
@@ -105,4 +136,11 @@ compileTestKotlin {
     kotlinOptions {
         jvmTarget = "17"
     }
+}
+
+
+
+signing {
+    useGpgCmd()
+    sign publishing.publications.mavenJava
 }
