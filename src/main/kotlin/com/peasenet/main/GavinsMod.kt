@@ -105,7 +105,7 @@ class GavinsMod : ModInitializer {
         /**
          * The current version of the mod.
          */
-        const val VERSION = "v1.4.5"
+        const val VERSION = "v1.4.6"
 
         /**
          * The gui used to display the main mod menu.
